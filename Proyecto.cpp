@@ -1,9 +1,9 @@
-#include<iostream>
-#include<fstream>
-#include<string.h>
-#include<stdlib.h>
+#include <iostream>
+#include <fstream>
+#include <string.h>
+#include <stdlib.h>
 #include <cstdlib>
-#include<stdio.h>
+#include <stdio.h>
 #include <ctime>
 #include <sstream>
 #include <cstring>
