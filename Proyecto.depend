@@ -10,3 +10,17 @@
 	<sstream>
 	<cstring>
 
+1698473953 source:c:\users\brand\desktop\proyecto\empleados.cpp
+	"Empleados.hpp"
+
+1698474025 c:\users\brand\desktop\proyecto\empleados.hpp
+	<iostream>
+	<fstream>
+	<string.h>
+	<stdlib.h>
+	<cstdlib>
+	<stdio.h>
+	<ctime>
+	<sstream>
+	<cstring>
+
