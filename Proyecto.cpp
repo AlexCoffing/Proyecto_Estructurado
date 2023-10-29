@@ -15,9 +15,9 @@ using namespace std;
 
 int main(void) {
     srand(time(0));
-    Empleados empleado, empleadoBuscar;
+    Empleados empleado, empleadoBuscar, empleadoEliminar;
     Empleados registroAgregar;
-    string dniABuscar;
+    string dniABuscar,seguro;
     char opcion;
 
     do {
@@ -26,7 +26,8 @@ int main(void) {
         cout<<" Seleccione una opcion: "<<endl;
         cout<<" 1. Insertar Registro"<<endl;
         cout<<" 2. Consultar"<<endl;
-        cout<<" 3. Salir"<<endl;
+        cout<<" 3. Eliminar de manera Logica"<<endl;
+        cout<<" 4. Salir"<<endl;
         cout<<" -> ";
         cin>>opcion;
         system("cls");
@@ -36,7 +37,7 @@ int main(void) {
                 if(empleado.altas(registroAgregar))
                     cout<<"\n Empleado Agregado con exito"<<endl<<endl;
                 else
-                    cout<<"\n NO SE PUDO AGREGAR AL EMPLEADO"<<endl<<endl;;
+                    cout<<"\n NO SE PUDO AGREGAR AL EMPLEADO"<<endl<<endl;
                 break;
             case '2':
                 cout<<"\n Ingrese el DNI del empleado a buscar: ";
@@ -48,6 +49,25 @@ int main(void) {
                     cout<<"\n No existe ese empleado"<<endl<<endl;
                 break;
             case '3':
+                cout<<"\n Ingrese el DNI del empleado a Eliminar: ";
+                fflush(stdin);
+                getline(cin, dniABuscar);
+                if(empleado.consultas(dniABuscar,empleadoBuscar)) {
+                    cout<<endl<<empleadoBuscar<<endl;
+                    cout<<"\n Estas seguro de Eliminar a este Empleado? (Si / No)"<<endl;
+                    cout<<" -> ";
+                    cin>>seguro;
+                    if(seguro=="SI" || seguro=="Si" || seguro=="si" || seguro=="sI") {
+                        if(empleado.bajas(dniABuscar,empleadoBuscar))
+                            cout<<"\n Empleado eliminado con exito"<<endl;
+                        else
+                            cout<<"\n No se pudo eliminar al empleado"<<endl;
+                        }
+                    }
+                else
+                    cout<<"\n No existe ese empleado"<<endl<<endl;
+                break;
+            case '4':
                 cout<<"\n Saliendo del programa con exito"<<endl<<endl;
                 break;
             default:
@@ -56,6 +76,6 @@ int main(void) {
         cout<<" ";
         system("Pause");
         }
-    while(opcion!='3');
+    while(opcion!='4');
     return 0;
     }

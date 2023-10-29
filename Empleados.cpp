@@ -205,28 +205,6 @@ string  Empleados::GeneradorDNI() {
     return (ss.str() + letra);
     }
 
-//función para agregar objetos nuevos al archivo
-bool Empleados::altas(const Empleados &nuevoEmpleado) {
-    string dniCadena = nuevoEmpleado.dni;
-
-    if (contiene(dniCadena))
-        return false;
-    else {
-        ofstream archivo("Empleados.txt", ios::app);
-        archivo << nuevoEmpleado.dni << "|" << nuevoEmpleado.nombre << "|" << nuevoEmpleado.cargo << "|"
-                << nuevoEmpleado.edad << "|" << nuevoEmpleado.sueldo << "|" << nuevoEmpleado.fecha_cont << "\n";
-        archivo.close();
-        return true;
-        }
-    }
-
-//funcion intermediaria que recibe un dni del empleado, llama al método buscarDni y evalúa el retorno de dicha función retornando false cuando el dni no se encuentra en el archivo
-bool Empleados::contiene(const string &dniABuscar) {
-    if(buscarDni(dniABuscar)== -1)
-        return false;
-    return true;
-    }
-
 //método que recibe como parámetro el valor de un identificador del empleado o el dni, para ello es necesario abrir el archivo para lectura(ios::in)
 long int Empleados::buscarDni(const string &valorDni) {
     Empleados empleado;
@@ -254,7 +232,21 @@ long int Empleados::buscarDni(const string &valorDni) {
         }// fin del if
     archivo.close();
     return -1;
+    }
 
+//función para agregar objetos nuevos al archivo
+bool Empleados::altas(const Empleados &nuevoEmpleado) {
+    string dniCadena = nuevoEmpleado.dni;
+
+    if (contiene(dniCadena))
+        return false;
+    else {
+        ofstream archivo("Empleados.txt", ios::app);
+        archivo << nuevoEmpleado.dni << "|" << nuevoEmpleado.nombre << "|" << nuevoEmpleado.cargo << "|"
+                << nuevoEmpleado.edad << "|" << nuevoEmpleado.sueldo << "|" << nuevoEmpleado.fecha_cont << "\n";
+        archivo.close();
+        return true;
+        }
     }
 
 //función consultar la cual recibe el dni del empleado que se desea localizar
@@ -283,6 +275,42 @@ bool Empleados::consultas(const string &dniABuscar, Empleados &empleadoEncontrad
         }//fin del else
     archivo.close();
     return false;
+    }
+
+//Funcion que pone un * para realizar el eliminado logico
+bool Empleados::bajas(const string &dniABuscar,Empleados &empleadoEliminado){
+    long int posByte;
+    string dniEliminar;
+
+    fstream archivo("Empleados.txt",ios::in | ios::out);
+    if (!archivo) {
+        cout<< "Lo sentimos, el archivo no existe :'(" << endl;
+        return -1;
+        }
+    else {
+        posByte=buscarDni(dniABuscar);
+        cout<<" posByte= "<<posByte<<endl;
+        if(posByte!= -1) {
+            archivo.seekp(posByte, ios::beg);
+            archivo.put('*');
+            archivo.getline(empleadoEliminado.nombre,37,'|');
+            archivo.getline(empleadoEliminado.cargo,37,'|');
+            archivo.getline(empleadoEliminado.edad,3,'|');
+            archivo.getline(empleadoEliminado.sueldo,11,'|');
+            archivo.getline(empleadoEliminado.fecha_cont,11,'\n');
+            archivo.close();
+            return true;
+            }//fin del if
+        }//fin del else
+    archivo.close();
+    return false;
+    }
+
+//funcion intermediaria que recibe un dni del empleado, llama al método buscarDni y evalúa el retorno de dicha función retornando false cuando el dni no se encuentra en el archivo
+bool Empleados::contiene(const string &dniABuscar) {
+    if(buscarDni(dniABuscar)== -1)
+        return false;
+    return true;
     }
 
 //función que retorna un flujo que permite la salida de datos
