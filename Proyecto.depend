@@ -1,16 +1,16 @@
 # depslib dependency file v1.0
-1698619110 source:c:\users\brand\desktop\proyecto\proyecto.cpp
+1698620484 source:c:\users\brand\desktop\proyecto\proyecto.cpp
 	"Empleados.hpp"
 
 1698620207 source:c:\users\brand\desktop\proyecto\empleados.cpp
 	"Empleados.hpp"
 
-1698618982 c:\users\brand\desktop\proyecto\empleados.hpp
+1698621649 c:\users\brand\desktop\proyecto\empleados.hpp
 	<iostream>
 	<fstream>
 	<sstream>
 	<string>
 	<ctime>
 	<cstring>
-	<vector>
+	<stack>
 

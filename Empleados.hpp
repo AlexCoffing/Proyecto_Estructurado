@@ -7,7 +7,7 @@
 #include <string>   // Pues el String
 #include <ctime>    // El tiempo para el rand
 #include <cstring>  // porque usamos char
-#include <vector> // Para la lista de disponibles
+#include <stack> // Para la lista de disponibles
 
 //declaración de la clase "Empleados"
 class Empleados {
@@ -35,9 +35,9 @@ class Empleados {
         void setFecha_cont(const std::string&);
 
         void verLista();
-        void escribirLista(const std::vector<int>&);
+        void escribirLista(const std::stack<int>&);
 
-        std::vector<int>leerLista();
+        std::stack<int>leerLista();
 
         std::string GeneradorDNI();
 

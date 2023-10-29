@@ -135,14 +135,18 @@ void Empleados::verLista() {
     }
 
 //Funcion que escribe en el txt, recibe un vector de enteros
-void Empleados::escribirLista(const vector<int>& registrosEliminados) {
+void Empleados::escribirLista(const stack<int>& registrosEliminados) {
     ofstream lista("LIST_DISP.txt");
     stringstream ss;
+    stack<int> copia = registrosEliminados; //Para no usar el original
+    bool primero = true; // Siempre el primer numero sera true
+    int x;
 
     if (lista) {
-        bool primero = true; // Siempre el primer numero sera true
+        while (!copia.empty()) { //Mientras no este vacia
+            x = copia.top();
+            copia.pop();
 
-        for (auto& x : registrosEliminados) {
             if (!primero) // Si no es el primero, entonce añade la flechita
                 ss << " -> ";
             ss << x;
@@ -155,8 +159,8 @@ void Empleados::escribirLista(const vector<int>& registrosEliminados) {
     }
 
 //Funcion que lee la lista actual del txt y retorna un vector de enteros
-vector<int> Empleados::leerLista() {
-    vector<int> registrosEliminados;
+stack<int> Empleados::leerLista() {
+    stack<int> registrosEliminados;
     ifstream lista("LIST_DISP.txt",ios::in);
 
     if(lista) {
@@ -171,7 +175,7 @@ vector<int> Empleados::leerLista() {
                 if (numero == "-1") {
                     break;
                     }
-                registrosEliminados.push_back(stoi(numero));
+                registrosEliminados.push(stoi(numero));
                 }
             }
         }
@@ -337,7 +341,7 @@ bool Empleados::consultas(const string &dniABuscar, Empleados &empleadoEncontrad
 //Funcion que pone un * para realizar el eliminado logico
 bool Empleados::bajas(const string &dniABuscar,Empleados &empleadoEliminado) {
     long int posByte;
-    vector<int>registroEliminado = leerLista(); //Inicializa el vector con los eliminados
+    stack<int>registroEliminado = leerLista(); //Inicializa el vector con los eliminados
     fstream archivo("Empleados.txt",ios::in | ios::out);
 
     if (!archivo) {
@@ -348,9 +352,9 @@ bool Empleados::bajas(const string &dniABuscar,Empleados &empleadoEliminado) {
         posByte=buscarDni(dniABuscar);
         if(posByte!= -1) {
             if(posByte!=0)
-                registroEliminado.push_back(posByte/110); //Divide los bytes entre su tamaño para tener el NRR
+                registroEliminado.push(posByte/110); //Divide los bytes entre su tamaño para tener el NRR
             else
-                registroEliminado.push_back(posByte);
+                registroEliminado.push(posByte);
 
             escribirLista(registroEliminado); //Agrega el NRR a la lista de disponibles
 
