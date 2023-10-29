@@ -1,12 +1,12 @@
 # depslib dependency file v1.0
-1698536900 source:c:\users\brand\desktop\proyecto\proyecto.cpp
+1698543336 source:c:\users\brand\desktop\proyecto\proyecto.cpp
 	<iostream>
 	"Empleados.hpp"
 
-1698539601 source:c:\users\brand\desktop\proyecto\empleados.cpp
+1698546991 source:c:\users\brand\desktop\proyecto\empleados.cpp
 	"Empleados.hpp"
 
-1698539573 c:\users\brand\desktop\proyecto\empleados.hpp
+1698546333 c:\users\brand\desktop\proyecto\empleados.hpp
 	<iostream>
 	<fstream>
 	<string>

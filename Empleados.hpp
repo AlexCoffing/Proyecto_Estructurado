@@ -15,7 +15,7 @@ class Empleados {
         char nombre[37];
         char cargo[37];
         char edad[3];
-        char sueldo[10];
+        char sueldo[11];
         char fecha_cont[11];
         long int buscarDni(const std::string&);
 

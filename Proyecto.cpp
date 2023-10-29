@@ -23,34 +23,37 @@ int main(void) {
     do {
         system("cls");
         cout<<" \n\n\t\t BIENVENIDO AL REGISTRO DE EMPLEADOS\n\n";
-        cout<<"Seleccione una opcion: "<<endl;
-        cout<<"1. Insertar Registro"<<endl;
-        cout<<"2. Consultar"<<endl;
-        cout<<"3. Salir"<<endl;
+        cout<<" Seleccione una opcion: "<<endl;
+        cout<<" 1. Insertar Registro"<<endl;
+        cout<<" 2. Consultar"<<endl;
+        cout<<" 3. Salir"<<endl;
+        cout<<" -> ";
         cin>>opcion;
         system("cls");
         switch(opcion) {
             case '1':
                 registroAgregar=empleado.pedirDatos();
                 if(empleado.altas(registroAgregar))
-                    cout<<"Empleado Agregado con exito"<<endl;
+                    cout<<"\n Empleado Agregado con exito"<<endl<<endl;
                 else
-                    cout<<" NO SE PUDO AGREGAR AL EMPLEADO"<<endl;
+                    cout<<"\n NO SE PUDO AGREGAR AL EMPLEADO"<<endl<<endl;;
                 break;
             case '2':
-                cout<<"Ingrese el DNI del empleado a buscar: ";
+                cout<<"\n Ingrese el DNI del empleado a buscar: ";
                 fflush(stdin);
                 getline(cin, dniABuscar);
                 if(empleado.consultas(dniABuscar,empleadoBuscar))
                     cout<<endl<<empleadoBuscar<<endl;
                 else
-                    cout<<"No existe ese empleado"<<endl;
+                    cout<<"\n No existe ese empleado"<<endl<<endl;
                 break;
             case '3':
-                cout<<"Saliendo del programa con exito"<<endl;
+                cout<<"\n Saliendo del programa con exito"<<endl<<endl;
                 break;
+            default:
+                cout<<"\n Esa opcion no existe, vuelva a intentarlo"<<endl<<endl;
             }
-        cout<<endl;
+        cout<<" ";
         system("Pause");
         }
     while(opcion!='3');

@@ -21,48 +21,105 @@ Empleados::Empleados(const Empleados &origen) {
     strcpy(fecha_cont, origen.fecha_cont);
     }
 
+//función para pedirle al usuario los datos necesarios para un objeto y  retornarlo con información listo para agregarlo al archivo
+Empleados Empleados::pedirDatos(void) {
+    int aux,i;
+    string cadena;
+    Empleados registroARetornar;
+
+    do {
+        string DNI = GeneradorDNI();
+        if (!contiene(DNI)) {
+            registroARetornar.setDni(DNI);
+            cout << "\n DNI generado: " << DNI << endl;  // Mostrar el DNI
+            break;
+            }
+        else {
+            cout << "\n El DNI ya existe. Generando uno nuevo." << endl;
+            }
+        }
+    while (true);
+
+    cout << "\n Nombre del empleado: ";
+    fflush(stdin);
+    getline(cin, cadena); //Lee la cadena
+    aux = cadena.size(); // Obtiene el tamaño
+    for(auto& c:cadena) // Convierte todos los caracteres a mayusculas
+        c=toupper(c);
+    for(i=0; i<36-aux; i++) // rellena con espacios
+        cadena+=" ";
+    registroARetornar.setNombre(cadena); // Se setea y se repite el proceso con los demas campos
+
+    cout << "\n Cargo: ";
+    fflush(stdin);
+    getline(cin, cadena);
+    aux = cadena.size();
+    for(auto& c:cadena)
+        c=toupper(c);
+    for(i=0; i<36-aux; i++)
+        cadena+=" ";
+    registroARetornar.setCargo(cadena);
+
+    cout << "\n Edad: ";
+    fflush(stdin);
+    getline(cin, cadena);
+    registroARetornar.setEdad(cadena);
+
+    cout << "\n Sueldo: $";
+    fflush(stdin);
+    getline(cin, cadena);
+    aux = cadena.size();
+    for(i=0; i<10-aux; i++)
+        cadena+=" ";
+    registroARetornar.setSueldo(cadena);
+
+    cout << "\n Fecha de Contratacion: ";
+    fflush(stdin);
+    getline(cin, cadena);
+    registroARetornar.setFecha_cont(cadena);
+
+    return registroARetornar;
+    }
+
 //inicio de los métodos de acceso para recuperar un valor asignado y poderlo mostrar en pantalla
 void Empleados::setDni(const string &valorDni) {
     int longitud=valorDni.size();
-    longitud=(longitud<10? longitud: 10-1);
     valorDni.copy(dni, longitud);
     dni[longitud]='\0';
     }
 
 void Empleados::setNombre(const string &valorNombre) {
     int longitud=valorNombre.size();
-    longitud= (longitud<37? longitud: 37-1);
     valorNombre.copy(nombre, longitud);
     nombre[longitud]='\0';
     }
 
 void Empleados::setCargo(const string &valorCargo) {
     int longitud=valorCargo.size();
-    longitud= (longitud<37? longitud: 37-1);
     valorCargo.copy(cargo, longitud);
     cargo[longitud]='\0';
     }
 
 void Empleados::setEdad(const string &valorEdad) {
     int longitud=valorEdad.size();
-    longitud= (longitud<3? longitud: 3-1);
+    longitud= (longitud<3? longitud: 3-1); //Validacion para mayores de 99 años
     valorEdad.copy(edad, longitud);
     edad[longitud]='\0';
     }
 
 void Empleados::setSueldo(const string &valorSueldo) {
     int longitud=valorSueldo.size();
-    longitud= (longitud<10? longitud: 10-1);
     valorSueldo.copy(sueldo, longitud);
     sueldo[longitud]='\0';
     }
 
 void Empleados::setFecha_cont(const string &valorFecha_cont) {
     int longitud=valorFecha_cont.size();
-    longitud= (longitud<11? longitud: 11-1);
+    longitud= (longitud<11? longitud: 11-1); // No se pero aqui esta
     valorFecha_cont.copy(fecha_cont, longitud);
     fecha_cont[longitud]='\0';
-    } //fin de los métodos de acceso
+    }
+//fin de los métodos de acceso
 
 //Fusion de Numero aleatorio y residuo, para retornar la letra
 string  Empleados::GeneradorDNI() {
@@ -148,58 +205,6 @@ string  Empleados::GeneradorDNI() {
     return (ss.str() + letra);
     }
 
-
-//función para pedirle al usuario los datos necesarios para un objeto y  retornarlo con información listo para agregarlo al archivo
-Empleados Empleados::pedirDatos(void) {
-    string cadena;
-    Empleados registroARetornar;
-
-    do {
-        string DNI = GeneradorDNI();
-        if (!contiene(DNI)) {
-            registroARetornar.setDni(DNI);
-            cout << "DNI generado: " << DNI << endl;  // Mostrar el DNI
-            break;
-            }
-        else {
-            cout << "El DNI ya existe. Generando uno nuevo." << endl;
-            }
-        }
-    while (true);
-
-    cout << "Nombre del empleado: ";
-    fflush(stdin);
-    getline(cin, cadena);
-    for(auto& c:cadena)
-        c=toupper(c);
-    registroARetornar.setNombre(cadena);
-
-    cout << "Cargo: ";
-    fflush(stdin);
-    getline(cin, cadena);
-    for(auto& c:cadena)
-        c=toupper(c);
-    registroARetornar.setCargo(cadena);
-
-    cout << "Edad: ";
-    fflush(stdin);
-    getline(cin, cadena);
-    registroARetornar.setEdad(cadena);
-
-    cout << "Sueldo: $";
-    fflush(stdin);
-    getline(cin, cadena);
-    registroARetornar.setSueldo(cadena);
-
-    cout << "Fecha de Contratacion: ";
-    fflush(stdin);
-    getline(cin, cadena);
-    registroARetornar.setFecha_cont(cadena);
-
-    return registroARetornar;
-    }
-
-
 //función para agregar objetos nuevos al archivo
 bool Empleados::altas(const Empleados &nuevoEmpleado) {
     string dniCadena = nuevoEmpleado.dni;
@@ -222,7 +227,6 @@ bool Empleados::contiene(const string &dniABuscar) {
     return true;
     }
 
-
 //método que recibe como parámetro el valor de un identificador del empleado o el dni, para ello es necesario abrir el archivo para lectura(ios::in)
 long int Empleados::buscarDni(const string &valorDni) {
     Empleados empleado;
@@ -243,7 +247,7 @@ long int Empleados::buscarDni(const string &valorDni) {
                 archivo.getline(temp.nombre, 37, '|');
                 archivo.getline(temp.cargo, 37, '|');
                 archivo.getline(temp.edad, 3, '|');
-                archivo.getline(temp.sueldo, 10, '|');
+                archivo.getline(temp.sueldo, 11, '|');
                 archivo.getline(temp.fecha_cont, 11, '\n');
                 }
             } //fin del ciclo while
@@ -264,33 +268,31 @@ bool Empleados::consultas(const string &dniABuscar, Empleados &empleadoEncontrad
         }
     else {
         posByte=buscarDni(dniABuscar);
-        cout<<"posByte= "<<posByte<<endl;
+        cout<<" posByte= "<<posByte<<endl;
         if(posByte!= -1) {
             archivo.seekg(posByte, ios::beg);
             archivo.getline(empleadoEncontrado.dni,10,'|');
             archivo.getline(empleadoEncontrado.nombre,37,'|');
             archivo.getline(empleadoEncontrado.cargo,37,'|');
             archivo.getline(empleadoEncontrado.edad,3,'|');
-            archivo.getline(empleadoEncontrado.sueldo,10,'|');
+            archivo.getline(empleadoEncontrado.sueldo,11,'|');
             archivo.getline(empleadoEncontrado.fecha_cont,11,'\n');
             archivo.close();
             return true;
-
             }//fin del if
         }//fin del else
     archivo.close();
     return false;
-
     }
 
 //función que retorna un flujo que permite la salida de datos
 ostream &operator<<(ostream &salida, const Empleados &empleado) {
-    salida<< "\nDNI: "<<empleado.dni<<endl
-          << "\nNombre del empleado: "<<empleado.nombre<<endl
-          << "\nCargo: "<<empleado.cargo<<endl
-          << "\nEdad: "<<empleado.edad<<endl
-          << "\nSueldo:$"<<empleado.sueldo<<endl
-          << "\nFecha de Contratacion: "<<empleado.fecha_cont<<endl;
+    salida<< "\n DNI: "<<empleado.dni<<endl
+          << "\n Nombre del empleado: "<<empleado.nombre<<endl
+          << "\n Cargo: "<<empleado.cargo<<endl
+          << "\n Edad: "<<empleado.edad<<endl
+          << "\n Sueldo:$"<<empleado.sueldo<<endl
+          << "\n Fecha de Contratacion: "<<empleado.fecha_cont<<endl;
 
     return salida;
     }
