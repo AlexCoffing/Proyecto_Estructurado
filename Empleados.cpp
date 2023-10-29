@@ -64,65 +64,88 @@ void Empleados::setFecha_cont(const string &valorFecha_cont) {
     fecha_cont[longitud]='\0';
     } //fin de los métodos de acceso
 
-//funcion para generar el numero aleatorio de 8 digitos
-int  generarNumeroAleatorio() {
-    int numeroAleatorio = rand() % 90000000 + 10000000;
+//Fusion de Numero aleatorio y residuo, para retornar la letra
+string  Empleados::GeneradorDNI() {
+    stringstream ss;
+    int numeroAleatorio = rand() % 90000000 + 10000000; // Se genera un numero aleatorio de 8 digitos
+    int numero = numeroAleatorio%23; //Se obtiene su residuo
+    char letra='\0';
 
-    return numeroAleatorio;
-    }
-
-//funcion para generar la letra correspondiente al residuo
-char obtenerLetraPorResiduo(int residuo) {
-    switch (residuo) {
+    switch (numero) { //Se busca la letra correspondiente al residuo
         case 0:
-            return 'T';
+            letra='T';
+            break;
         case 1:
-            return 'R';
+            letra='R';
+            break;
         case 2:
-            return 'W';
+            letra='W';
+            break;
         case 3:
-            return 'A';
+            letra='A';
+            break;
         case 4:
-            return 'G';
+            letra='G';
+            break;
         case 5:
-            return 'M';
+            letra='M';
+            break;
         case 6:
-            return 'Y';
+            letra='Y';
+            break;
         case 7:
-            return 'F';
+            letra='F';
+            break;
         case 8:
-            return 'P';
+            letra='P';
+            break;
         case 9:
-            return 'D';
+            letra='D';
+            break;
         case 10:
-            return 'X';
+            letra='X';
+            break;
         case 11:
-            return 'B';
+            letra='B';
+            break;
         case 12:
-            return 'N';
+            letra='N';
+            break;
         case 13:
-            return 'J';
+            letra='J';
+            break;
         case 14:
-            return 'Z';
+            letra='Z';
+            break;
         case 15:
-            return 'S';
+            letra='S';
+            break;
         case 16:
-            return 'Q';
+            letra='Q';
+            break;
         case 17:
-            return 'V';
+            letra='V';
+            break;
         case 18:
-            return 'H';
+            letra='H';
+            break;
         case 19:
-            return 'L';
+            letra='L';
+            break;
         case 20:
-            return 'C';
+            letra='C';
+            break;
         case 21:
-            return 'K';
+            letra='K';
+            break;
         case 22:
-            return 'E';
+            letra='E';
+            break;
         default:
-            return '\0'; // Caracter nulo en caso de residuo inválido
+            letra='\0'; // Caracter nulo en caso de residuo inválido
         }
+    ss << numeroAleatorio;
+    return (ss.str() + letra);
     }
 
 
@@ -131,17 +154,9 @@ Empleados Empleados::pedirDatos(void) {
     string cadena;
     Empleados registroARetornar;
 
-    //int numeroAleatorio;
     do {
-        int numero = generarNumeroAleatorio();
-        int residuo = numero % 23;
-        char letra = obtenerLetraPorResiduo(residuo);
-
-        stringstream ss;
-        ss << numero;
-        string DNI = ss.str() + letra;
+        string DNI = GeneradorDNI();
         if (!contiene(DNI)) {
-            //numeroAleatorio = numero; No creo que esto haga algo
             registroARetornar.setDni(DNI);
             cout << "DNI generado: " << DNI << endl;  // Mostrar el DNI
             break;
@@ -155,11 +170,15 @@ Empleados Empleados::pedirDatos(void) {
     cout << "Nombre del empleado: ";
     fflush(stdin);
     getline(cin, cadena);
+    for(auto& c:cadena)
+        c=toupper(c);
     registroARetornar.setNombre(cadena);
 
     cout << "Cargo: ";
     fflush(stdin);
     getline(cin, cadena);
+    for(auto& c:cadena)
+        c=toupper(c);
     registroARetornar.setCargo(cadena);
 
     cout << "Edad: ";

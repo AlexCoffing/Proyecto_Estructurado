@@ -32,6 +32,8 @@ class Empleados {
         void setSueldo(const std::string&);
         void setFecha_cont(const std::string&);
 
+        std::string GeneradorDNI();
+
         bool altas(const Empleados&);
         bool consultas(const std::string&,Empleados&);
         bool bajas(const std::string&,Empleados&);
