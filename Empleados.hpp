@@ -17,6 +17,7 @@ class Empleados {
         char edad[3];
         char sueldo[11];
         char fecha_cont[11];
+        int tamano = 110;
         long int buscarDni(const std::string&);
 
     public:
@@ -33,6 +34,8 @@ class Empleados {
         void setFecha_cont(const std::string&);
 
         std::string GeneradorDNI();
+
+        int contarRegistros();
 
         bool altas(const Empleados&);
         bool consultas(const std::string&,Empleados&);

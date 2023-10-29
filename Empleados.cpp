@@ -205,19 +205,40 @@ string  Empleados::GeneradorDNI() {
     return (ss.str() + letra);
     }
 
+int Empleados::contarRegistros() {
+    Empleados temp;
+    int contador = -1;
+    ifstream archivo("Empleados.txt", ios::in);
+
+    if (archivo) {
+        while (archivo.getline(temp.dni, 10,'|')) {
+            archivo.getline(temp.nombre, 37, '|');
+            archivo.getline(temp.cargo, 37, '|');
+            archivo.getline(temp.edad, 3, '|');
+            archivo.getline(temp.sueldo, 11, '|');
+            archivo.getline(temp.fecha_cont, 11, '\n');
+            contador++;
+            cout<<contador;
+            }//fin del ciclo while
+        }// fin del if
+    archivo.close();
+    return contador;
+    }
+
 //método que recibe como parámetro el valor de un identificador del empleado o el dni, para ello es necesario abrir el archivo para lectura(ios::in)
 long int Empleados::buscarDni(const string &valorDni) {
     Empleados empleado;
     Empleados temp;
+    int contador=-1;
     long int posByte = 0;
 
     empleado.setDni(valorDni);
     ifstream archivo("Empleados.txt", ios::in);
     if (archivo) {
-        while (!archivo.eof()) {
-            archivo.getline(temp.dni, 10,'|');
+        while (archivo.getline(temp.dni, 10,'|')) {
+            contador++;
             if(strcmp(temp.dni, empleado.dni)==0) {
-                posByte = (long)archivo.tellg() - (strlen(temp.dni) + 1);
+                posByte = tamano*contador;
                 archivo.close();
                 return posByte;
                 }
@@ -260,7 +281,7 @@ bool Empleados::consultas(const string &dniABuscar, Empleados &empleadoEncontrad
         }
     else {
         posByte=buscarDni(dniABuscar);
-        cout<<" posByte= "<<posByte<<endl;
+        cout<<"\n posByte= "<<posByte;
         if(posByte!= -1) {
             archivo.seekg(posByte, ios::beg);
             archivo.getline(empleadoEncontrado.dni,10,'|');
@@ -278,7 +299,7 @@ bool Empleados::consultas(const string &dniABuscar, Empleados &empleadoEncontrad
     }
 
 //Funcion que pone un * para realizar el eliminado logico
-bool Empleados::bajas(const string &dniABuscar,Empleados &empleadoEliminado){
+bool Empleados::bajas(const string &dniABuscar,Empleados &empleadoEliminado) {
     long int posByte;
     string dniEliminar;
 
