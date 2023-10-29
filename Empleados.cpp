@@ -273,6 +273,11 @@ long int Empleados::buscarDni(const string &valorDni) {
     int contador=-1;
     long int posByte = 0;
 
+    if(valorDni[0]=='*'){
+        cout<<"\n Registro Borrado Logico"<<endl;
+        return -1;
+    }
+
     empleado.setDni(valorDni);
     ifstream archivo("Empleados.txt", ios::in);
     if (archivo) {
