@@ -3,10 +3,11 @@
 
 #include <iostream> // Libreria de C++
 #include <fstream>  // Los archivos
+#include <sstream>  // Cosa para string en archivos
 #include <string>   // Pues el String
 #include <ctime>    // El tiempo para el rand
-#include <sstream>  // Cosa para string en archivos
 #include <cstring>  // porque usamos char
+#include <vector> // Para la lista de disponibles
 
 //declaración de la clase "Empleados"
 class Empleados {
@@ -33,9 +34,12 @@ class Empleados {
         void setSueldo(const std::string&);
         void setFecha_cont(const std::string&);
 
-        std::string GeneradorDNI();
+        void verLista();
+        void escribirLista(const std::vector<int>&);
 
-        int contarRegistros();
+        std::vector<int>leerLista();
+
+        std::string GeneradorDNI();
 
         bool altas(const Empleados&);
         bool consultas(const std::string&,Empleados&);

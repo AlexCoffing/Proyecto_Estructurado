@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Empleados::Empleados() {
+Empleados::Empleados() { // Se inicializan los campos en nulo
     dni[0] = '\0';
     nombre[0] = '\0';
     cargo[0] = '\0';
@@ -102,7 +102,6 @@ void Empleados::setCargo(const string &valorCargo) {
 
 void Empleados::setEdad(const string &valorEdad) {
     int longitud=valorEdad.size();
-    longitud= (longitud<3? longitud: 3-1); //Validacion para mayores de 99 años
     valorEdad.copy(edad, longitud);
     edad[longitud]='\0';
     }
@@ -115,11 +114,69 @@ void Empleados::setSueldo(const string &valorSueldo) {
 
 void Empleados::setFecha_cont(const string &valorFecha_cont) {
     int longitud=valorFecha_cont.size();
-    longitud= (longitud<11? longitud: 11-1); // No se pero aqui esta
     valorFecha_cont.copy(fecha_cont, longitud);
     fecha_cont[longitud]='\0';
     }
 //fin de los métodos de acceso
+
+//Funcion que muestra la lista en la consola
+void Empleados::verLista() {
+    ifstream lista("LIST_DISP.txt", ios::in);
+    string linea;
+
+    if (lista)
+        getline(lista, linea);
+
+    lista.close();
+    if(linea!="")
+        cout <<"\n Lista de disponibles: " <<linea<<endl;
+    else
+        cout<<"\n No hay ningun elemento" <<endl;
+    }
+
+//Funcion que escribe en el txt, recibe un vector de enteros
+void Empleados::escribirLista(const vector<int>& registrosEliminados) {
+    ofstream lista("LIST_DISP.txt");
+    stringstream ss;
+
+    if (lista) {
+        bool primero = true; // Siempre el primer numero sera true
+
+        for (auto& x : registrosEliminados) {
+            if (!primero) // Si no es el primero, entonce añade la flechita
+                ss << " -> ";
+            ss << x;
+            primero = false;
+            }
+        ss << " -> -1\n"; // Al final se le agrega el -1
+        lista << ss.str();
+        }
+    lista.close();
+    }
+
+//Funcion que lee la lista actual del txt y retorna un vector de enteros
+vector<int> Empleados::leerLista() {
+    vector<int> registrosEliminados;
+    ifstream lista("LIST_DISP.txt",ios::in);
+
+    if(lista) {
+        string linea;
+        getline(lista, linea);
+        lista.close();
+
+        string numero;
+        istringstream stream(linea); // Toma lo que tiene linea como si fuera un txt
+        while (getline(stream, numero, ' ')) { //itera hasta encontrar el espacio, 3"" termina y luego ->"" y asi sucecivamente
+            if(numero != "->") {
+                if (numero == "-1") {
+                    break;
+                    }
+                registrosEliminados.push_back(stoi(numero));
+                }
+            }
+        }
+    return registrosEliminados; //Retorna los resultados
+    }
 
 //Fusion de Numero aleatorio y residuo, para retornar la letra
 string  Empleados::GeneradorDNI() {
@@ -205,26 +262,6 @@ string  Empleados::GeneradorDNI() {
     return (ss.str() + letra);
     }
 
-int Empleados::contarRegistros() {
-    Empleados temp;
-    int contador = -1;
-    ifstream archivo("Empleados.txt", ios::in);
-
-    if (archivo) {
-        while (archivo.getline(temp.dni, 10,'|')) {
-            archivo.getline(temp.nombre, 37, '|');
-            archivo.getline(temp.cargo, 37, '|');
-            archivo.getline(temp.edad, 3, '|');
-            archivo.getline(temp.sueldo, 11, '|');
-            archivo.getline(temp.fecha_cont, 11, '\n');
-            contador++;
-            cout<<contador;
-            }//fin del ciclo while
-        }// fin del if
-    archivo.close();
-    return contador;
-    }
-
 //método que recibe como parámetro el valor de un identificador del empleado o el dni, para ello es necesario abrir el archivo para lectura(ios::in)
 long int Empleados::buscarDni(const string &valorDni) {
     Empleados empleado;
@@ -281,7 +318,6 @@ bool Empleados::consultas(const string &dniABuscar, Empleados &empleadoEncontrad
         }
     else {
         posByte=buscarDni(dniABuscar);
-        cout<<"\n posByte= "<<posByte;
         if(posByte!= -1) {
             archivo.seekg(posByte, ios::beg);
             archivo.getline(empleadoEncontrado.dni,10,'|');
@@ -301,19 +337,25 @@ bool Empleados::consultas(const string &dniABuscar, Empleados &empleadoEncontrad
 //Funcion que pone un * para realizar el eliminado logico
 bool Empleados::bajas(const string &dniABuscar,Empleados &empleadoEliminado) {
     long int posByte;
-    string dniEliminar;
-
+    vector<int>registroEliminado = leerLista(); //Inicializa el vector con los eliminados
     fstream archivo("Empleados.txt",ios::in | ios::out);
+
     if (!archivo) {
         cout<< "Lo sentimos, el archivo no existe :'(" << endl;
         return -1;
         }
     else {
         posByte=buscarDni(dniABuscar);
-        cout<<" posByte= "<<posByte<<endl;
         if(posByte!= -1) {
+            if(posByte!=0)
+                registroEliminado.push_back(posByte/110); //Divide los bytes entre su tamaño para tener el NRR
+            else
+                registroEliminado.push_back(posByte);
+
+            escribirLista(registroEliminado); //Agrega el NRR a la lista de disponibles
+
             archivo.seekp(posByte, ios::beg);
-            archivo.put('*');
+            archivo.put('*'); //Pone el "*" en la posicion 0 del DNI
             archivo.getline(empleadoEliminado.nombre,37,'|');
             archivo.getline(empleadoEliminado.cargo,37,'|');
             archivo.getline(empleadoEliminado.edad,3,'|');

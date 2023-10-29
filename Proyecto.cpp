@@ -1,21 +1,20 @@
 /*
     Nombre de los integrantes y codigos:
     1. De La Paz Espinosa Brandon Alexander 219575098
-    2. Romo Lopez Juan Diego 21
+    2. Romo Lopez Juan Diego 222790617
 
     Nombre de la materia: Estructuras de Datos II
     Seccion: D03
     Profesora: Lara Lopez Graciela
 */
 
-#include <iostream>
 #include "Empleados.hpp"
 
 using namespace std;
 
 int main(void) {
     srand(time(0));
-    Empleados empleado, empleadoBuscar, empleadoEliminar;
+    Empleados empleado, empleadoBuscar;
     Empleados registroAgregar;
     string dniABuscar,seguro;
     char opcion;
@@ -25,9 +24,10 @@ int main(void) {
         cout<<" \n\n\t\t BIENVENIDO AL REGISTRO DE EMPLEADOS\n\n";
         cout<<" Seleccione una opcion: "<<endl;
         cout<<" 1. Insertar Registro"<<endl;
-        cout<<" 2. Consultar"<<endl;
-        cout<<" 3. Eliminar de manera Logica"<<endl;
-        cout<<" 4. Salir"<<endl;
+        cout<<" 2. Consultar registro por su DNI"<<endl;
+        cout<<" 3. Eliminar registro de manera logica"<<endl;
+        cout<<" 4. Visualizar la lista de disponibles"<<endl;
+        cout<<" 5. Salir"<<endl;
         cout<<" -> ";
         cin>>opcion;
         system("cls");
@@ -44,7 +44,7 @@ int main(void) {
                 fflush(stdin);
                 getline(cin, dniABuscar);
                 if(empleado.consultas(dniABuscar,empleadoBuscar))
-                    cout<<endl<<empleadoBuscar<<endl;
+                    cout<<empleadoBuscar<<endl;
                 else
                     cout<<"\n No existe ese empleado"<<endl<<endl;
                 break;
@@ -53,21 +53,26 @@ int main(void) {
                 fflush(stdin);
                 getline(cin, dniABuscar);
                 if(empleado.consultas(dniABuscar,empleadoBuscar)) {
-                    cout<<endl<<empleadoBuscar<<endl;
-                    cout<<"\n Estas seguro de Eliminar a este Empleado? (Si / No)"<<endl;
+                    cout<<empleadoBuscar<<endl;
+                    cout<<" Estas seguro de Eliminar a este Empleado? (Si / No)"<<endl;
                     cout<<" -> ";
                     cin>>seguro;
                     if(seguro=="SI" || seguro=="Si" || seguro=="si" || seguro=="sI") {
                         if(empleado.bajas(dniABuscar,empleadoBuscar))
-                            cout<<"\n Empleado eliminado con exito"<<endl;
+                            cout<<"\n El empleado sea eliminado de manera logica con exito"<<endl;
                         else
                             cout<<"\n No se pudo eliminar al empleado"<<endl;
                         }
+                    cout<<endl;
                     }
                 else
                     cout<<"\n No existe ese empleado"<<endl<<endl;
                 break;
             case '4':
+                empleado.verLista();
+                cout<<endl;
+                break;
+            case '5':
                 cout<<"\n Saliendo del programa con exito"<<endl<<endl;
                 break;
             default:
@@ -76,6 +81,6 @@ int main(void) {
         cout<<" ";
         system("Pause");
         }
-    while(opcion!='4');
+    while(opcion!='5');
     return 0;
     }
